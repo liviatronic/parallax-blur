@@ -56,21 +56,66 @@ document.addEventListener('DOMContentLoaded', function () {
             ypos = window.event.screenY;
         }
 
-        //call XMap and YMap functions to map the x and y values into a range
+        // find inverse x and y positions
+        let canvas = document.getElementById('container');
+        // get element position
+        let rect = canvas.getBoundingClientRect();
+
+        // get inversed coordinates
+        let ix = rect.width - (event.clientX - rect.left);
+        let iy = rect.height - (event.clientY - rect.top);
+
+        //call functions to map the x and y values into a range
         XMap(xpos);
         YMap(ypos);
+        XMapRev(ix);
+        YMapRev(iy);
 
-        // call XYMove and give it the NewX and NewY values from XMap and YMap
+        // call functions and pass them mapped values
         XYMove(NewX, NewY);
-        XYBlur(NewX, NewY);
+        handBlur(NewXRev, NewYRev);
+        logoBlur(NewX, NewY);
+        handOpacity(NewX, NewY);
+        logoOpacity(NewXRev, NewYRev);
     }
     document.getElementById("container").onmousemove = findScreenCoords;
+
+
+    function XYMove(tempX, tempY) {
+        document.getElementById("logotype").style.setProperty('top', parseLogoTop - (tempY * .5));
+        document.getElementById("logotype").style.setProperty('right', parseLogoRight + (tempX * .5));
+
+        document.getElementById("hand-left").style.setProperty('bottom', parseHand1Bottom - tempY);
+        document.getElementById("hand-left").style.setProperty('left', parseHand1Left + tempX);
+
+        document.getElementById("hand-right").style.setProperty('top', parseHand2Top + tempY);
+        document.getElementById("hand-right").style.setProperty('right', parseHand2Right - tempX);
+    }
+
+    function handBlur(tempX, tempY) {
+        document.getElementById("hand-right").style.setProperty('filter', 'blur(' + ((tempX + tempY) * .2) + 'px)');
+        document.getElementById("hand-left").style.setProperty('filter', 'blur(' + ((tempX + tempY) * .2) + 'px)');
+    }
+
+    function logoBlur(tempX, tempY) {
+        document.getElementById("logotype").style.setProperty('filter', 'blur(' + ((tempX + tempY) * .2) + 'px)');
+    }
+
+    function handOpacity(tempX, tempY) {
+        document.getElementById("hand-right").style.setProperty('opacity', (tempX + tempY) * .1);
+        document.getElementById("hand-left").style.setProperty('opacity', (tempX + tempY) * .1);
+    }
+
+    function logoOpacity(tempX, tempY) {
+        console.log('opacity: ' + (tempX + tempY) * .2);
+        document.getElementById("logotype").style.setProperty('opacity', (tempX + tempY) * .2);
+    }
 
 
     function XMap(OldValue) {
         OldMax = window.innerWidth;
         OldMin = 0;
-        NewMax = 12;
+        NewMax = 10;
         NewMin = 0;
         OldRange = (OldMax - OldMin);
         if (OldRange == 0) {
@@ -85,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function YMap(OldValue) {
         OldMax = window.innerHeight;
         OldMin = 0;
-        NewMax = 12;
+        NewMax = 10;
         NewMin = 0;
         OldRange = (OldMax - OldMin);
         if (OldRange == 0) {
@@ -97,25 +142,34 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function XYMove(tempX, tempY) {
-        document.getElementById("logotype").style.setProperty('top', parseLogoTop - (tempY * .5));
-        document.getElementById("logotype").style.setProperty('right', parseLogoRight + (tempX * .5));
-
-        document.getElementById("hand-left").style.setProperty('bottom', parseHand1Bottom - tempY);
-        document.getElementById("hand-left").style.setProperty('left', parseHand1Left + tempX);
-
-        document.getElementById("hand-right").style.setProperty('top', parseHand2Top + tempY);
-        document.getElementById("hand-right").style.setProperty('right', parseHand2Right - tempX);
+    function XMapRev(OldValue) {
+        OldMax = window.innerWidth;
+        OldMin = 0;
+        NewMax = 10;
+        NewMin = 0;
+        OldRange = (OldMax - OldMin);
+        if (OldRange == 0) {
+            NewValue = NewMin;
+        } else {
+            NewRange = (NewMax - NewMin);
+            NewXRev = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin;
+            return NewXRev;
+        }
     }
 
-    function XYBlur(tempX, tempY) {
-        document.getElementById("hand-right").style.setProperty('filter', 'blur(' + ((tempX + tempY) * .3) + 'px)');
-        document.getElementById("hand-left").style.setProperty('filter', 'blur(' + ((tempX + tempY) * .15) + 'px)');
-        document.getElementById("logotype").style.setProperty('filter', 'blur(' + ((tempX + tempY) * .05) + 'px)');
-
-        document.getElementById("hand-right").style.setProperty('opacity', ((tempX + tempY) / 20) + .6);
-        document.getElementById("hand-left").style.setProperty('opacity', ((tempX + tempY) / 20) + .6);
-        document.getElementById("logotype").style.setProperty('opacity', ((tempX + tempY) / 20) + .6);
+    function YMapRev(OldValue) {
+        OldMax = window.innerHeight;
+        OldMin = 0;
+        NewMax = 10;
+        NewMin = 0;
+        OldRange = (OldMax - OldMin);
+        if (OldRange == 0) {
+            NewValue = NewMin;
+        } else {
+            NewRange = (NewMax - NewMin);
+            NewYRev = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin;
+            return NewYRev;
+        }
     }
 
 });
