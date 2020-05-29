@@ -82,14 +82,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function XYMove(tempX, tempY) {
-        document.getElementById("logotype").style.setProperty('top', parseLogoTop - (tempY * .5));
-        document.getElementById("logotype").style.setProperty('right', parseLogoRight + (tempX * .5));
+        document.getElementById("logotype").style.setProperty('top', parseLogoTop - (tempY * .7));
+        document.getElementById("logotype").style.setProperty('right', parseLogoRight + (tempX * .7));
 
-        document.getElementById("hand-left").style.setProperty('bottom', parseHand1Bottom - tempY);
-        document.getElementById("hand-left").style.setProperty('left', parseHand1Left + tempX);
+        document.getElementById("hand-left").style.setProperty('bottom', parseHand1Bottom - (tempY * 2));
+        document.getElementById("hand-left").style.setProperty('left', parseHand1Left + (tempX * 2));
 
-        document.getElementById("hand-right").style.setProperty('top', parseHand2Top + tempY);
-        document.getElementById("hand-right").style.setProperty('right', parseHand2Right - tempX);
+        document.getElementById("hand-right").style.setProperty('top', parseHand2Top + (tempY * 2));
+        document.getElementById("hand-right").style.setProperty('right', parseHand2Right - (tempX * 2));
     }
 
     function handBlur(tempX, tempY) {
@@ -98,17 +98,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function logoBlur(tempX, tempY) {
-        document.getElementById("logotype").style.setProperty('filter', 'blur(' + ((tempX + tempY) * .2) + 'px)');
+        document.getElementById("logotype").style.setProperty('filter', 'blur(' + ((tempX + tempY) * .1) + 'px)');
     }
 
     function handOpacity(tempX, tempY) {
-        document.getElementById("hand-right").style.setProperty('opacity', (tempX + tempY) * .1);
-        document.getElementById("hand-left").style.setProperty('opacity', (tempX + tempY) * .1);
+        document.getElementById("hand-right").style.setProperty('opacity', ((tempX + tempY) * .2) + .4);
+        document.getElementById("hand-left").style.setProperty('opacity', ((tempX + tempY) * .2) + .4);
     }
 
     function logoOpacity(tempX, tempY) {
-        console.log('opacity: ' + (tempX + tempY) * .2);
-        document.getElementById("logotype").style.setProperty('opacity', (tempX + tempY) * .2);
+        document.getElementById("logotype").style.setProperty('opacity', ((tempX + tempY) * .2) + .7);
     }
 
 
